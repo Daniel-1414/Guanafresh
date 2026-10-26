@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Guanábana - Guana Fresh</title>
+  <link rel="icon" href="img/logo2.jpg" type="image/jpeg">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+  <div class="page productos-page">
+
+    <header class="productos-header">
+      <a href="index.html" class="btn-volver">
+        <i class="fas fa-arrow-left"></i> Volver
+      </a>
+      <img src="img/logo2.jpg" alt="Guana Fresh" class="logo-small">
+    </header>
+
+    <div class="productos-hero">
+      <h1>Quiz de la Guanábana</h1>
+      <p>¿Cuánto sabes de esta fruta increíble?</p>
+    </div>
+
+    <div class="productos-container">
+      <div class="quiz-container" id="quizContainer">
+
+        <!-- Pantalla de inicio del quiz -->
+        <div class="quiz-start" id="quizStart">
+          <div class="info-card destacado" style="text-align:center;">
+            <div style="font-size:3rem; margin-bottom:1rem;">🧠🍃</div>
+            <h2 style="color:var(--green-dark); margin-bottom:0.8rem;">¡Pon a prueba tus conocimientos!</h2>
+            <p style="margin-bottom:1.5rem;">Responde 6 preguntas sobre la guanábana y descubre qué tanto sabes.</p>
+            <button class="btn-productos" id="btnIniciarQuiz">Comenzar Quiz</button>
+          </div>
+        </div>
+
+        <!-- Preguntas -->
+        <div class="quiz-pregunta" id="quizPregunta" style="display:none;">
+          <div class="quiz-progreso">
+            <div class="quiz-barra" id="quizBarra"></div>
+          </div>
+          <p class="quiz-contador" id="quizContador">Pregunta 1 de 6</p>
+          <div class="info-card">
+            <h2 class="quiz-texto" id="quizTexto"></h2>
+            <div class="quiz-opciones" id="quizOpciones"></div>
+          </div>
+        </div>
+
+        <!-- Resultado final -->
+        <div class="quiz-resultado" id="quizResultado" style="display:none;">
+          <div class="info-card destacado" style="text-align:center;">
+            <div class="quiz-emoji" id="quizEmoji" style="font-size:3.5rem; margin-bottom:0.8rem;"></div>
+            <h2 id="quizTituloResultado" style="color:var(--green-dark); margin-bottom:0.5rem;"></h2>
+            <p id="quizPuntaje" style="font-size:1.3rem; font-weight:700; color:var(--green-main); margin-bottom:1rem;"></p>
+            <p id="quizMensaje" style="margin-bottom:1.5rem;"></p>
+            <div style="display:flex; gap:0.8rem; justify-content:center; flex-wrap:wrap;">
+              <button class="btn-productos" id="btnReiniciar">Jugar de nuevo</button>
+              <a href="productos.html" class="btn-productos" style="background:var(--green-dark);">Ver productos</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <footer class="productos-footer">
+      <p>Guana Fresh S.A.S — Saludable, natural, deliciosa como ninguna igual</p>
+    </footer>
+  </div>
+
+  <script src="main.js"></script>
+  <script>
+    const preguntas = [
+      {
+        pregunta: "¿Cuál es el nombre científico de la guanábana?",
+        opciones: ["Annona muricata", "Citrus sinensis", "Mangifera indica", "Persea americana"],
+        correcta: 0
+      },
+      {
+        pregunta: "¿De qué color es la pulpa de la guanábana?",
+        opciones: ["Roja", "Amarilla", "Blanca y cremosa", "Verde"],
+        correcta: 2
+      },
+      {
+        pregunta: "¿Qué beneficio se asocia tradicionalmente con la guanábana?",
+        opciones: ["Aumentar la presión arterial", "Ayudar a la relajación y el descanso", "Provocar insomnio", "Reducir la vitamina C"],
+        correcta: 1
+      },
+      {
+        pregunta: "¿En qué regiones de Colombia es más común la guanábana?",
+        opciones: ["Solo en la Costa Atlántica", "En regiones cálidas y tropicales", "Solo en la zona andina", "Únicamente en el Amazonas"],
+        correcta: 1
+      },
+      {
+        pregunta: "¿Qué tipo de productos elabora Guana Fresh con guanábana?",
+        opciones: ["Solo jugos", "Productos naturales como jugos, postres, snacks y más", "Únicamente cosméticos", "Solo helados"],
+        correcta: 1
+      },
+      {
+        pregunta: "¿Qué contiene la guanábana que la hace nutritiva?",
+        opciones: ["Solo azúcar", "Vitaminas, minerales, fibra y antioxidantes", "Solo grasa", "Ningún nutriente"],
+        correcta: 1
+      }
+    ];
+
+    let preguntaActual = 0;
+    let puntaje = 0;
+
+    const quizStart = document.getElementById("quizStart");
+    const quizPregunta = document.getElementById("quizPregunta");
+    const quizResultado = document.getElementById("quizResultado");
+    const quizTexto = document.getElementById("quizTexto");
+    const quizOpciones = document.getElementById("quizOpciones");
+    const quizContador = document.getElementById("quizContador");
+    const quizBarra = document.getElementById("quizBarra");
+
+    document.getElementById("btnIniciarQuiz").addEventListener("click", iniciarQuiz);
+    document.getElementById("btnReiniciar").addEventListener("click", reiniciarQuiz);
+
+    function iniciarQuiz() {
+      preguntaActual = 0;
+      puntaje = 0;
+      quizStart.style.display = "none";
+      quizResultado.style.display = "none";
+      quizPregunta.style.display = "block";
+      mostrarPregunta();
+    }
+
+    function mostrarPregunta() {
+      const p = preguntas[preguntaActual];
+      quizTexto.textContent = p.pregunta;
+      quizContador.textContent = `Pregunta ${preguntaActual + 1} de ${preguntas.length}`;
+      quizBarra.style.width = `${((preguntaActual + 1) / preguntas.length) * 100}%`;
+
+      quizOpciones.innerHTML = "";
+      p.opciones.forEach((opcion, i) => {
+        const btn = document.createElement("button");
+        btn.className = "quiz-opcion";
+        btn.textContent = opcion;
+        btn.onclick = () => seleccionarRespuesta(i);
+        quizOpciones.appendChild(btn);
+      });
+    }
+
+    function seleccionarRespuesta(indice) {
+      const botones = document.querySelectorAll(".quiz-opcion");
+      botones.forEach(b => b.disabled = true);
+
+      const correcta = preguntas[preguntaActual].correcta;
+
+      if (indice === correcta) {
+        puntaje++;
+        botones[indice].classList.add("correcta");
+      } else {
+        botones[indice].classList.add("incorrecta");
+        botones[correcta].classList.add("correcta");
+      }
+
+      setTimeout(() => {
+        preguntaActual++;
+        if (preguntaActual < preguntas.length) {
+          mostrarPregunta();
+        } else {
+          mostrarResultado();
+        }
+      }, 900);
+    }
+
+    function mostrarResultado() {
+      quizPregunta.style.display = "none";
+      quizResultado.style.display = "block";
+
+      const total = preguntas.length;
+      const porcentaje = Math.round((puntaje / total) * 100);
+
+      document.getElementById("quizPuntaje").textContent = `${puntaje} / ${total} correctas (${porcentaje}%)`;
+
+      if (puntaje === total) {
+        document.getElementById("quizEmoji").textContent = "🏆";
+        document.getElementById("quizTituloResultado").textContent = "¡Experto en Guanábana!";
+        document.getElementById("quizMensaje").textContent = "Sabes muchísimo sobre esta fruta. ¡Eres un verdadero fan de Guana Fresh!";
+      } else if (puntaje >= 4) {
+        document.getElementById("quizEmoji").textContent = "🌟";
+        document.getElementById("quizTituloResultado").textContent = "¡Muy bien!";
+        document.getElementById("quizMensaje").textContent = "Tienes buenos conocimientos. Sigue aprendiendo con nosotros.";
+      } else if (puntaje >= 2) {
+        document.getElementById("quizEmoji").textContent = "🍃";
+        document.getElementById("quizTituloResultado").textContent = "¡Vas por buen camino!";
+        document.getElementById("quizMensaje").textContent = "Aún puedes aprender más sobre los beneficios de la guanábana.";
+      } else {
+        document.getElementById("quizEmoji").textContent = "🌱";
+        document.getElementById("quizTituloResultado").textContent = "¡Hora de descubrir la guanábana!";
+        document.getElementById("quizMensaje").textContent = "No te preocupes, en Guana Fresh te enseñamos todo sobre esta fruta increíble.";
+      }
+    }
+
+    function reiniciarQuiz() {
+      quizResultado.style.display = "none";
+      quizStart.style.display = "block";
+    }
+  </script>
+</body>
+</html>

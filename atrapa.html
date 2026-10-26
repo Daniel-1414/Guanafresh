@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atrapa la Guanábana - Guana Fresh</title>
+  <link rel="icon" href="img/logo2.jpg" type="image/jpeg">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+  <div class="page productos-page">
+
+    <header class="productos-header">
+      <a href="juegos.html" class="btn-volver">
+        <i class="fas fa-arrow-left"></i> Volver
+      </a>
+      <img src="img/logo2.jpg" alt="Guana Fresh" class="logo-small">
+    </header>
+
+    <div class="productos-hero">
+      <h1>Atrapa la Guanábana</h1>
+      <p>¡Haz clic en las que caen!</p>
+    </div>
+
+    <div class="productos-container" style="max-width:480px;">
+
+      <!-- Pantalla de inicio -->
+      <div id="atrapaStart" class="info-card destacado" style="text-align:center;">
+        <div style="font-size:3.5rem; margin-bottom:0.8rem;">🍃</div>
+        <h2 style="color:var(--green-dark); margin-bottom:0.6rem;">¿Listo para atrapar?</h2>
+        <p style="margin-bottom:1.4rem;">Tienes <strong>30 segundos</strong>. ¡Atrapa todas las guanábanas que puedas!</p>
+        <button class="btn-productos" id="btnIniciarAtrapa">¡Jugar!</button>
+      </div>
+
+      <!-- Área de juego -->
+      <div id="atrapaJuego" style="display:none;">
+        <div class="atrapa-stats">
+          <span>⏱ <span id="tiempo">30</span>s</span>
+          <span>🍃 <span id="puntos">0</span></span>
+        </div>
+        <div class="atrapa-area" id="atrapaArea"></div>
+      </div>
+
+      <!-- Resultado -->
+      <div id="atrapaResultado" class="info-card destacado" style="display:none; text-align:center;">
+        <div id="atrapaEmoji" style="font-size:3.5rem; margin-bottom:0.6rem;"></div>
+        <h2 id="atrapaTitulo" style="color:var(--green-dark); margin-bottom:0.5rem;"></h2>
+        <p id="atrapaPuntaje" style="font-size:1.4rem; font-weight:700; color:var(--green-main); margin-bottom:1rem;"></p>
+        <p id="atrapaMensaje" style="margin-bottom:1.4rem;"></p>
+        <div style="display:flex; gap:0.8rem; justify-content:center; flex-wrap:wrap;">
+          <button class="btn-productos" id="btnReiniciarAtrapa">Jugar de nuevo</button>
+          <a href="productos.html" class="btn-productos" style="background:var(--green-dark);">Ver productos</a>
+        </div>
+      </div>
+
+    </div>
+
+    <footer class="productos-footer">
+      <p>Guana Fresh S.A.S — Saludable, natural, deliciosa como ninguna igual</p>
+    </footer>
+  </div>
+
+  <script>
+    const area = document.getElementById("atrapaArea");
+    const puntosEl = document.getElementById("puntos");
+    const tiempoEl = document.getElementById("tiempo");
+    const atrapaStart = document.getElementById("atrapaStart");
+    const atrapaJuego = document.getElementById("atrapaJuego");
+    const atrapaResultado = document.getElementById("atrapaResultado");
+
+    let puntos = 0;
+    let tiempo = 30;
+    let intervaloTiempo = null;
+    let intervaloCrear = null;
+    let jugando = false;
+
+    document.getElementById("btnIniciarAtrapa").addEventListener("click", iniciar);
+    document.getElementById("btnReiniciarAtrapa").addEventListener("click", () => {
+      atrapaResultado.style.display = "none";
+      atrapaStart.style.display = "block";
+    });
+
+    function iniciar() {
+      puntos = 0;
+      tiempo = 30;
+      jugando = true;
+      puntosEl.textContent = "0";
+      tiempoEl.textContent = "30";
+      area.innerHTML = "";
+
+      atrapaStart.style.display = "none";
+      atrapaResultado.style.display = "none";
+      atrapaJuego.style.display = "block";
+
+      intervaloTiempo = setInterval(() => {
+        tiempo--;
+        tiempoEl.textContent = tiempo;
+        if (tiempo <= 0) terminar();
+      }, 1000);
+
+      intervaloCrear = setInterval(crearGuanabana, 700);
+    }
+
+    function crearGuanabana() {
+      if (!jugando) return;
+
+      const g = document.createElement("div");
+      g.className = "guanabana-caida";
+      g.textContent = "🍈";
+      g.style.left = Math.random() * (area.offsetWidth - 50) + "px";
+      g.style.animationDuration = (1.8 + Math.random() * 1.5) + "s";
+
+      g.addEventListener("click", () => {
+        if (!jugando) return;
+        puntos++;
+        puntosEl.textContent = puntos;
+        g.remove();
+      });
+
+      g.addEventListener("animationend", () => g.remove());
+      area.appendChild(g);
+    }
+
+    function terminar() {
+      jugando = false;
+      clearInterval(intervaloTiempo);
+      clearInterval(intervaloCrear);
+      area.innerHTML = "";
+      atrapaJuego.style.display = "none";
+      atrapaResultado.style.display = "block";
+
+      document.getElementById("atrapaPuntaje").textContent = `${puntos} guanábanas atrapadas`;
+
+      if (puntos >= 25) {
+        document.getElementById("atrapaEmoji").textContent = "🏆";
+        document.getElementById("atrapaTitulo").textContent = "¡Maestro atrapador!";
+        document.getElementById("atrapaMensaje").textContent = "Increíble reflejos. Te mereces un jugo de guanábana.";
+      } else if (puntos >= 15) {
+        document.getElementById("atrapaEmoji").textContent = "🌟";
+        document.getElementById("atrapaTitulo").textContent = "¡Muy bien!";
+        document.getElementById("atrapaMensaje").textContent = "Buen trabajo. Sigue practicando.";
+      } else if (puntos >= 8) {
+        document.getElementById("atrapaEmoji").textContent = "🍃";
+        document.getElementById("atrapaTitulo").textContent = "¡Nada mal!";
+        document.getElementById("atrapaMensaje").textContent = "Vas mejorando. Inténtalo otra vez.";
+      } else {
+        document.getElementById("atrapaEmoji").textContent = "🌱";
+        document.getElementById("atrapaTitulo").textContent = "¡Sigue intentando!";
+        document.getElementById("atrapaMensaje").textContent = "La práctica hace al maestro. ¡Otra ronda!";
+      }
+    }
+  </script>
+</body>
+</html>

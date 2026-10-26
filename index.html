@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guana Fresh S.A.S</title>
+<link rel="icon" href="img/logo2.jpg" type="image/jpeg">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+<!-- Bienvenida animada -->
+<div class="welcome-screen" id="welcomeScreen">
+    <div class="welcome-content">
+    <img src="img/logo2.jpg" alt="Guana Fresh" class="welcome-logo">
+    <h1 class="welcome-title">¡Bienvenido a GuanaFresh S.A.S!</h1>
+    <p class="welcome-subtitle">Saludable, natural, deliciosa como ningúna igual</p>
+    </div>
+</div>
+
+<div class="page">
+
+    <!-- Decoraciones de bordes -->
+    <div class="decor-top"></div>
+    <div class="decor-bottom"></div>
+    <div class="decor-left"></div>
+    <div class="decor-right"></div>
+
+    <!-- Contenido principal -->
+    <main class="content">
+    <!-- Logo -->
+    <div class="logo-container">
+        <img src="img/logo2.jpg" alt="Guana Fresh S.A.S" class="logo">
+    </div>
+
+    <!-- Botones del menú -->
+<nav class="menu">
+  <a href="inicio.html" class="btn">Inicio</a>
+  <a href="productos.html" class="btn">Productos</a>
+  <a href="promociones.html" class="btn">Promociones</a>
+  <a href="juegos.html" class="btn">Juegos</a>
+  <a href="nosotros.html" class="btn">Nosotros</a>
+</nav>
+
+    <!-- Sección de redes -->
+    <section class="social">
+        <h2 class="siguenos">
+        <span class="sparkle">✦</span> Síguenos <span class="sparkle">✦</span>
+        </h2>
+        <div class="social-icons">
+        <a href="https://www.instagram.com/guanafreshh?stkn=OXlrNWE4YWlremo0" target="_blank" class="icon-btn" aria-label="Instagram" title="Instagram">
+<i class="fab fa-instagram"></i>
+        </a>
+
+<a href="https://wa.me/573170172880?text=Hola%2C%20vi%20su%20empresa%20Guana%20Fresh%20y%20me%20gustar%C3%ADa%20recibir%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20productos." target="_blank" class="icon-btn" aria-label="WhatsApp" title="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+</a>
+        </div>
+    </section>
+    </main>
+
+</div>
+
+<script src="main.js"></script>
+<script>
+  // Pantalla de bienvenida
+    window.addEventListener("load", function() {
+    const welcome = document.getElementById("welcomeScreen");
+    
+    if (welcome) {
+      // Se oculta automáticamente después de 3 segundos
+    setTimeout(function() {
+        welcome.classList.add("oculto");
+    }, 3000);
+
+      // También se puede cerrar haciendo clic
+    welcome.addEventListener("click", function() {
+        welcome.classList.add("oculto");
+    });
+    }
+});
+</script>
+
+</body>
+</html>
